@@ -6,9 +6,13 @@ const winMessage = document.getElementById("winMessage");
 let knightPosition = { row: 0, col: 0 };
 const visitedSquares = new Set();
 let moveCount = 0;
+let confettiInterval = null; // track running confetti so it can be cleared
 
 function createBoard() {
     board.innerHTML = "";
+
+    // ensure the current square is always tracked as visited
+    visitedSquares.add(`${knightPosition.row},${knightPosition.col}`);
 
     const legalMoves = getKnightMoves(knightPosition);
 
@@ -72,9 +76,15 @@ function createBoard() {
                         const duration = 3 * 1000; // 3 seconds
                         const end = Date.now() + duration;
 
-                        const confettiInterval = setInterval(() => {
+                        // clear any running confetti loop before starting a new one
+                        if (confettiInterval) {
+                            clearInterval(confettiInterval);
+                        }
+
+                        confettiInterval = setInterval(() => {
                             if (Date.now() > end) {
                                 clearInterval(confettiInterval);
+                                confettiInterval = null;
                                 return;
                             }
 
@@ -101,7 +111,12 @@ resetButton.addEventListener("click", () => {
     visitedSquares.clear();
     moveDisplay.textContent = moveCount;
     winMessage.textContent = "";
-    winMessage.textContent = "";
+
+    // stop any running confetti animation when resetting
+    if (confettiInterval) {
+        clearInterval(confettiInterval);
+        confettiInterval = null;
+    }
     winMessage.style.animation = "none"; // clear animation
     winMessage.offsetHeight;             // force reflow
     winMessage.style.animation = null;   // re-enable animation
