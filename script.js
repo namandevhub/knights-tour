@@ -2,6 +2,27 @@ const board = document.getElementById("board");
 const moveDisplay = document.getElementById("moveCount");
 const resetButton = document.getElementById("resetButton");
 const winMessage = document.getElementById("winMessage");
+const bestScoreDisplay = document.getElementById("bestScore");
+const minMovesDisplay = document.getElementById("minMoves");
+const gamesPlayedDisplay = document.getElementById("gamesPlayed");
+
+let stats = JSON.parse(localStorage.getItem("knightTourStats")) || {
+    gamesPlayed: 0,
+    bestScore: 0,
+    minMovesToWin: null
+};
+
+function saveStats() {
+    localStorage.setItem("knightTourStats", JSON.stringify(stats));
+}
+
+function updateStatsDisplay() {
+    bestScoreDisplay.textContent = stats.bestScore;
+    minMovesDisplay.textContent = stats.minMovesToWin !== null ? stats.minMovesToWin : "-";
+    gamesPlayedDisplay.textContent = stats.gamesPlayed;
+}
+
+updateStatsDisplay();
 
 let knightPosition = { row: 0, col: 0 };
 const visitedSquares = new Set();
@@ -60,8 +81,14 @@ function createBoard() {
                     moveCount++;
                     moveDisplay.textContent = moveCount;
 
+                    visitedSquares.add(`${clickedRow},${clickedCol}`);
+                    if (visitedSquares.size > stats.bestScore) {
+                        stats.bestScore = visitedSquares.size;
+                        saveStats();
+                        updateStatsDisplay();
+                    }
+
                     //Check win condition
-                    visitedSquares.add(`${clickedRow},${clickedCol}`); //ensure visited is updated before checking
 
                     if (visitedSquares.size === 25) {
                         winMessage.textContent = "🎉 You completed the Knight's Tour!";
@@ -94,6 +121,12 @@ function createBoard() {
                                 origin: { x: Math.random(), y: Math.random() * 0.5 }
                             });
                         }, 250);
+
+                        if (stats.minMovesToWin === null || moveCount < stats.minMovesToWin) {
+                            stats.minMovesToWin = moveCount;
+                            saveStats();
+                            updateStatsDisplay();
+                        }
                     }
 
                     createBoard();
@@ -106,21 +139,7 @@ function createBoard() {
 }
 
 resetButton.addEventListener("click", () => {
-    knightPosition = { row: 0, col: 0 };
-    moveCount = 0;
-    visitedSquares.clear();
-    moveDisplay.textContent = moveCount;
-    winMessage.textContent = "";
-
-    // stop any running confetti animation when resetting
-    if (confettiInterval) {
-        clearInterval(confettiInterval);
-        confettiInterval = null;
-    }
-    winMessage.style.animation = "none"; // clear animation
-    winMessage.offsetHeight;             // force reflow
-    winMessage.style.animation = null;   // re-enable animation
-    createBoard();
+    startNewGame();
 });
 
 // Check if a move is a valid knight move
@@ -149,4 +168,26 @@ function getKnightMoves(pos) {
     );
 }
 
-createBoard();
+function startNewGame() {
+    knightPosition = { row: 0, col: 0 };
+    moveCount = 0;
+    visitedSquares.clear();
+    moveDisplay.textContent = moveCount;
+    winMessage.textContent = "";
+
+    // stop any running confetti animation when resetting
+    if (confettiInterval) {
+        clearInterval(confettiInterval);
+        confettiInterval = null;
+    }
+    winMessage.style.animation = "none"; // clear animation
+    winMessage.offsetHeight;             // force reflow
+    winMessage.style.animation = null;   // re-enable animation
+
+    stats.gamesPlayed++;
+    saveStats();
+    updateStatsDisplay();
+
+    createBoard();
+}
+startNewGame();
