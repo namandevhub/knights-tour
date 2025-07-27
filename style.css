@@ -1,60 +1,113 @@
+/* Reset */
 body {
-  font-family: Arial, sans-serif;
-  text-align: center;
-  background-color: #f0f0f0;
+  margin: 0;
+  padding: 0;
+  font-family: 'Orbitron', sans-serif;
+  /* Futuristic font */
+  background-color: #0e0e12;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  position: relative;
+  overflow: hidden;
 }
 
+/* Background glow */
+.hero-bg {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at center, #1a1a2e, #0e0e12);
+  z-index: 0;
+}
+
+/* Main container */
+.game-container {
+  z-index: 1;
+  background: rgba(30, 30, 40, 0.8);
+  border-radius: 20px;
+  padding: 30px;
+  box-shadow: 0 0 20px rgba(138, 43, 226, 0.4);
+  text-align: center;
+  width: fit-content;
+  max-width: 100%;
+}
+
+/* Title */
+h1 {
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+  color: #f72585;
+  /* Neon Pink */
+}
+
+/* Stats text */
+.stats p {
+  margin: 5px;
+  font-size: 1.1rem;
+  color: #adb5bd;
+}
+
+/* Board */
 #board {
   display: grid;
   grid-template-columns: repeat(5, 60px);
   grid-template-rows: repeat(5, 60px);
-  width: 300px;
+  gap: 0px;
   margin: 20px auto;
   border: 2px solid #333;
+  justify-content: center;
 }
 
+/* Board Squares */
 .square {
-  width: 60px;
-  height: 60px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 64px;
-}
-
-.black {
-  background-color: #769656;
+  font-size: 40px;
+  border: 1px solid #333;
 }
 
 .white {
-  background-color: #eeeed2;
+  background-color: #2b2d42;
+}
+
+.black {
+  background-color: #1c1e29;
 }
 
 .visited {
-  background-color: #b0afaa !important;
-  box-shadow: inset 0 0 0 1px black;
+  background-color: #6d7071 !important;
 }
 
 .legal {
-  box-shadow: inset 0 0 0 3px blue; /* 3px red "border" on all sides, inside */
+  box-shadow: inset 0 0 0 3px #00f5d4;
 }
 
+/* Button */
+#resetButton {
+  margin-top: 20px;
+  padding: 12px 20px;
+  border: none;
+  font-size: 1rem;
+  border-radius: 30px;
+  background-color: #7209b7;
+  color: white;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+#resetButton:hover {
+  background-color: #560bad;
+  box-shadow: 0 0 10px #f72585, 0 0 20px #f72585;
+}
+
+/* Win Message */
 #winMessage {
-  color: #9428a7;               /* color */
-  font-size: 72px;              /* bigger font */
-  font-weight: bold;            /* bold text */
-  margin-top: 40px;             /* space above */
-  animation: pop 1s ease-in-out;  /* pop animation */
-}
-
-/* Define animation called "pop" */
-@keyframes pop {
-  0% {
-    transform: scale(0.8);
-    opacity: 0;
-  }
-  100% {
-    transform: scale(1);
-    opacity: 1;
-  }
+  margin-top: 20px;
+  font-size: 1rem;
+  color: #4cc9f0;
+  font-weight: bold;
 }

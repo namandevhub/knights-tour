@@ -1,21 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <title>Knight's Tour</title>
   <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
-  <h1>Knight's Tour</h1>
-  <p> Moves: <span id="moveCount">0</span></p>
-  <button id="resetButton">Reset Game</button>
-  <h2>Stats</h2>
-  <p> Best Score (squares visited): <span id="bestScore">0</span></p>
-  <p> Minimum moves to win: <span id="minMoves">-</span></p>
-  <p> Games played: <span id="gamesPlayed">0</span></p>
-  <p id="winMessage" style="color:green; font-weight: bold;"> </p>
-  <div id="board"></div>
+  <!-- Background for glowing effects -->
+  <div class="hero-bg"></div>
+
+  <!-- Main content -->
+  <main class="game-container">
+    <h1>Knight's Tour</h1>
+
+    <div class="stats">
+      <p>Moves: <span id="moveCount">0</span></p>
+      <p>Best: <span id="bestScore">0</span> | Played: <span id="gamesPlayed">0</span></p>
+      <p>Min Moves: <span id="minMoves">-</span></p>
+    </div>
+
+    <div id="board"></div>
+
+    <button id="resetButton">Reset Game</button>
+
+    <div id="winMessage"></div>
+    </div>
+  </main>
+
   <script src="script.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 </body>
+
 </html>
